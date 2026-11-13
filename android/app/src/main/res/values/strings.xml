@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">RemindMe</string>
+    <string name="channel_normal_name">Reminder notifications</string>
+    <string name="channel_normal_desc">Normal reminder alerts</string>
+    <string name="channel_alarm_name">Full-screen alarms</string>
+    <string name="channel_alarm_desc">Alarm-style reminders that open on the lock screen</string>
+    <string name="channel_snooze_name">Snoozed reminders</string>
+    <string name="channel_snooze_desc">Reminders you snoozed</string>
+</resources>

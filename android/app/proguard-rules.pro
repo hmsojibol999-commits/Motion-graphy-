@@ -1,0 +1,2 @@
+-keep class com.remindme.remindme.** { *; }
+-dontwarn com.google.gson.**

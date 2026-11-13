@@ -1,0 +1,50 @@
+name: remindme
+description: Fully offline reminder app with full-screen alarms.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+  flutter: '>=3.50.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: 1.0.8
+  flutter_riverpod: 2.6.1
+  go_router: 14.2.7
+  drift: 2.35.4
+  sqlite3: 3.9.1
+  path: 1.9.0
+  path_provider: 2.1.4
+  timezone: 0.9.4
+  flutter_timezone: 5.1.1
+  file_picker: 8.1.2
+  permission_handler: 11.3.1
+  share_plus: 13.3.1
+  cross_file: 0.3.5+5
+  flutter_animate: 4.5.0
+  vibration: 2.0.0
+  intl: 0.20.3
+  table_calendar: 3.3.0
+  uuid: 4.4.2
+  shared_preferences: 2.3.2
+  csv: 6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 6.0.0
+  drift_dev: 2.35.3
+  build_runner: 2.17.1
+  fake_async: 1.3.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/sounds/
+    - assets/fonts/

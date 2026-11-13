@@ -10,8 +10,7 @@ class TimezoneHelper {
     if (_initialized) return;
     tz.initializeTimeZones();
     try {
-      final timezone = await FlutterTimezone.getLocalTimezone();
-      final id = timezone is String ? timezone : timezone.identifier;
+      final id = await FlutterTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(id));
     } catch (_) {}
     _initialized = true;

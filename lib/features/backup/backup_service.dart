@@ -8,7 +8,9 @@ import '../../data/repositories/repositories.dart';
 
 class BackupService {
   final ReminderRepository _repo;
-  BackupService(this._repo);
+  final CategoryRepository _categoryRepo;
+
+  BackupService(this._repo, this._categoryRepo);
 
   Future<void> exportJson() async {
     final reminders = await _repo.watchAll().first;

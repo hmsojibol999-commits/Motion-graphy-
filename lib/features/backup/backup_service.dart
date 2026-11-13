@@ -4,7 +4,8 @@ import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../data/repositories/repositories.dart';
+import '../../data/repositories/reminder_repository.dart';
+import '../../data/repositories/category_repository.dart';
 
 class BackupService {
   final ReminderRepository _repo;

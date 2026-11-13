@@ -15,7 +15,20 @@ class BackupService {
 
   Future<void> exportJson() async {
     final reminders = await _repo.watchAll().first;
-    final jsonStr = jsonEncode(reminders.map((r) => r.toCompanion().toJson()).toList());
+    final jsonList = reminders.map((r) => {
+      'id': r.id,
+      'title': r.title,
+      'note': r.note,
+      'dueAt': r.dueAt.toIso8601String(),
+      'categoryId': r.categoryId,
+      'priority': r.priority.index,
+      'repeatType': r.repeatType.index,
+      'status': r.status.index,
+      'createdAt': r.createdAt.toIso8601String(),
+      'updatedAt': r.updatedAt.toIso8601String(),
+    }).toList();
+
+    final jsonStr = jsonEncode(jsonList);
     final dir = await getTemporaryDirectory();
     final file = File('${dir.path}/remindme_backup_${DateTime.now().millisecondsSinceEpoch}.json');
     await file.writeAsString(jsonStr);

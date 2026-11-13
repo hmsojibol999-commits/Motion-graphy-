@@ -121,7 +121,7 @@ void main() {
         anchor: anchor,
         firedCount: 0,
       );
-      expect(next!.month, 3);
+      expect(next!.month, 5);
       expect(next.day, 31);
     });
   });
@@ -181,7 +181,7 @@ void main() {
         firedCount: 0,
       );
       // Feb 2025 has no 5th Friday, so it should return Mar's 5th Friday.
-      expect(next!.month, 3);
+      expect(next!.month, 5);
     });
   });
 

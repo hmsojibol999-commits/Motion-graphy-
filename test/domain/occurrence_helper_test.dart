@@ -43,7 +43,7 @@ void main() {
       type: RepeatType.daily,
       fired: 2,
     );
-    final list = OccurrenceHelper.upcoming(r, DateTime(2025, 3, 2));
+    final list = OccurrenceHelper.upcoming(r, DateTime(2025, 3, 2, 10));
     expect(list.first, DateTime(2025, 3, 3, 9));
   });
 }

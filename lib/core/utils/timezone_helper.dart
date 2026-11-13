@@ -11,10 +11,9 @@ class TimezoneHelper {
     tz.initializeTimeZones();
     try {
       final timezone = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(timezone.identifier));
-    } catch (_) {
-      // Native DateTime and AlarmManager paths still use the system time zone.
-    }
+      final id = timezone is String ? timezone : timezone.identifier;
+      tz.setLocalLocation(tz.getLocation(id));
+    } catch (_) {}
     _initialized = true;
   }
 

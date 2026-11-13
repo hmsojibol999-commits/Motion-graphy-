@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.hardware.camera2.CameraManager
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
@@ -50,6 +49,17 @@ class AlarmForegroundService : Service(), TextToSpeech.OnInitListener {
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+        
+        val stopIntent = Intent(this, AlarmReceiver::class.java).apply {
+            action = AlarmScheduler.ACTION_DONE
+            putExtra("payload", AlarmPayloadJson.toJson(p))
+            putExtra("notificationId", notifId)
+        }
+        val stopPi = PendingIntent.getBroadcast(
+            this, notifId * 16 + 1, stopIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val n = NotificationCompat.Builder(this, AlarmScheduler.CH_ALARM)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(p.title)
@@ -58,7 +68,9 @@ class AlarmForegroundService : Service(), TextToSpeech.OnInitListener {
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pi)
             .setOngoing(true)
+            .addAction(0, "STOP", stopPi) 
             .build()
+            
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(notifId, n, android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
         } else {
@@ -67,8 +79,6 @@ class AlarmForegroundService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun startRinging(p: AlarmPayload) {
-        handler = Handler(Looper.getMainLooper())
-        // Sound
         try {
             player = MediaPlayer().apply {
                 setAudioAttributes(
@@ -93,7 +103,6 @@ class AlarmForegroundService : Service(), TextToSpeech.OnInitListener {
             if (p.gradualVolume) startGradualFade(p)
         } catch (_: Exception) {}
 
-        // Vibration
         try {
             vib = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             val pattern = when (p.vibrationType) {
@@ -109,15 +118,10 @@ class AlarmForegroundService : Service(), TextToSpeech.OnInitListener {
             }
         } catch (_: Exception) {}
 
-        // Flashlight
         if (p.flashlightBlink) startFlashlight()
+        if (p.ttsRead) tts = TextToSpeech(this, this)
 
-        // TTS
-        if (p.ttsRead) {
-            tts = TextToSpeech(this, this)
-        }
-
-        // Auto-stop after ringDurationSec * ringRepeatCount (hard cap)
+        handler = Handler(Looper.getMainLooper())
         val total = (p.ringDurationSec * p.ringRepeatCount * 1000L).coerceAtMost(5 * 60 * 1000L)
         handler?.postDelayed({ stopSelfSafely() }, total)
     }
